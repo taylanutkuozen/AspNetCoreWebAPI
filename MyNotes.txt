@@ -1,0 +1,170 @@
+Application Programming Interface (API)'ler, tümleþik (integrated) web uygulamalarý geliþtirmek ve kurmak için bir dizi tanýmlar ve protokollerden oluþan bir uygulama arayüzüdür.
+API ürün ya da servisin, uygulama detaylarý ve teknoloji tercihlerinden baðýmsýz olarak baþka ürün ya da servisler ile iletiþim kurmasýna olanak tanýr.
+1970--> Remote Processing Controller, Messaging, Queuing [Daðýtýk hesalamanýn ortaya çýkýþý]
+1990--> Component Object Model/Distributed Component Object Model, CORBA, Java RMI (Ýnternet var, nesne yönelimli paradigmalar) [Nesne tabanlý API'lar]
+2000--> XML,HTTP, SOAP(Simple Object Access Protocol, http haberleþme:xml dosya formatý. en küçük veri için bile meta bilgileri gerektirir esneklik mümkün olmuyor), REST() [Web Tabanlý API'lar]
+2010-->GraphQL, gRPC [Web Tabanlý API'lar]
+Backend Systems= Services[Uygulamanýn ana düþüncesinin gerçekleþtiði yerdir, Örnek olarak finans uygulamasý ise, finans uygulamasýna ait kurallar, tanýmlar, e-ticaret ise kurallar, iþ mantýðý modellenir. hem fonksiyonel, hem de fonksiyonel olmayan pek çok özellik service layer üzerinde modellenir]{Persistance[Verilerin kalýcý olarak saklanmasý, verilerin kalýcý olarak organize edilmesi görevini yürütmektedir. Data Access Layer],Presentation[APIs]-->(Frontend Systems-->Web,Mobile,IoT Device)}
+Gelen request için bodysine,header'ýna bakýlýr.
+Minimal API--> DB baðlantýsý, Tüm HTTP istekleri tek sayfada
+Backend as a service (BaaS)
+Backend as a function(BaaF)
+API teknolojisi aþaðýdaki yapýlarda kullanýlabilir:
+	Bir web site
+	Single Page Application
+	Mobile App
+	Bir servis veya hizmet geliþtirmek
+Örnek:
+	Request:
+		POST--> Bir request=Amaç burada bir kaynak oluþturmak
+		Content Length:5=Bir Header temsil ediyor. 5 bytelýk bir veri oluþturulmak isteniyor.
+		Hello-->Request Body.
+	Response:
+		201-->Http Status Code
+		Content Type:text-->Oluþtuduðum kaynak 'text' formatýnda gönderiyorum. (Header)
+		Hello-->Bilgi istemci tarafýndan gelen veri
+Sunucu(server) ile istemci(client) arasýndaki durum sürekli deðildir. Ýstek(request) attýktan sonra baðlantý kesilebilir. Response ile yanýtlanýr.(Stateless--Durumsuzluk).
+Request Yapýsý
+	verb
+		(Sunucuda gerçekleþtirilen eylemler)
+			GET=Kaynak isteme (Sunucudan veri almak)-->> 200 Success, 204 RequestSuccess, NoInformation, 404
+			POST=Kaynak oluþturma -->>201,200
+			PUT=Kaynak güncelleme
+			PATCH=Kýsmi kaynak güncellenmesi 
+			DELETE=Kaynak silme
+	headers
+		(Ýstek hakkýnda üst{meta} bilgiler)
+			Content Type=Ýçeriðin formatý. Hangi formatta JSON,XML,CSV.
+			Content Length=Ýçeriðin boyutu.
+			Authorization=Ýsteði yapanýn kimliði. (Yetki gerektiren oturum açma tarzý iþlemler)
+			Accept=Kabul edilen type'lar
+			Cookies=Request içindeki veriler
+	content
+		(Ýstek ile ilgili içerik)
+			HTML, CSS, JavaScript, XML, JSON
+			Bazý eylemler ile geçerli olmayan içerik
+			Ýsteði gerçekleþtirmeye yardýmcý olmak için bilgiler
+			Binary ve blobs common (.jpg gibi)
+Response Yapýsý
+	status code
+		Operasyon Durumlarý
+			100-199=Bilgi (Information)
+			200-299=Baþarý (Success)
+			300-399=Yeniden yönlendirme(Redirection)
+			400-499=Ýstemci hatalarý(Client errors)
+			500-599=Sunucu hatalarý(Server errors)
+	headers
+		(Cevap hakkýnda üst{meta} bilgiler)
+			ContentType=Ýçeriðin formatý (JSON vb.)
+			ContentLength=Ýçeriðin boyutu
+			Expires=Ne zaman geçersiz sayýlýr
+	content
+		Ýçerik:
+			CSS, HTML, JavaScript, XML, JSON
+			Binary ve blobs common(.jpg)
+RESTfulAPI
+	API Tasarýmý
+		Önce API tasarýmý
+		Ýsimler ve Fiiller
+		URI tasarýmý
+		Durum kodlarý
+		Sonuçlarýn tasarlanmasý
+REST denilince standard bir fiilimiz var get,post,put,delete gibi. Bu fiili tanýmlamak için bir endpoint kaynak tanýmlayýcýsýna ihtiyacým var.
+					VERB      +   URL(Query String) = Unify Resource Identify
+								  Headers(istek ile ilgili bilgileri sunmak, bazý ek bilgiler saðlamak üzere, isteðe ait olan tanýmlayýcý ifadeleri header ile göndereceðiz) {Örneðin bir GET request geliyor ise gövde göndermeyiz ancak bir POST, PUT ise request body de kaynak ifadesi olabilir.}
+Sunucu bu isteði alacak okuyacak ve deðerlendirecek sonunda bir cevap döndürecektir. Sunucu tarafýndaki verinin istemciye iletilmesi gerekmektedir. Sunucu ile client arasýnda kaynaðýn deðiþtirilmesine bir exchange iþlemi gerçekleþecektir ve bunun adý REST olarak ifade edilmektedir.
+API gelen fiile göre(get,post vs.) bir status code üretecek cevapla ilgili bir Header (üst-meta bilgileri organize edecek þekilde) ve gerekli ise bir gövde ile dönmüþ olacak. Sunucu tarafýndaki body deki verilerin client aktarýlmasý gereklidir sunucudaki bilgiyi istemciye gönder(REST i ifade ediyor)
+URls
+	URl'ler kaynaklarýn sadece bir parçasýdýr.
+		./books=tüm kitaplar
+		./books/lastest/10 = en son çýkan 10 kitap
+		./books/mostread=en çok okunan kitaplar
+	Veri olmayan öðeler için sorgu dizeleri (Query String)
+		Sýralama
+		Arama
+	En Ýyi Pratikler{Ýsimler(nouns) iyi, fiiller (kötü)}
+	./getBooks=(kötü) ./Books=(iyi)
+	./getBooksByTitle=(kötü) ./Books/Title_için_bir_query_string_hazýrla=(iyi)
+		Ýsimleri(nouns) tercih edin
+			./books
+			./categories
+			./products
+			./employees
+			./authors
+		URl içerisinde Tanýmlayýcýlar kullanýlabilir.
+			URl içinde tanýmlayýcýlarý kullanýnýz.
+			Tanýmlayýcýlar anahtar deðerler olmak zorunda deðildir.
+				./books
+				./books/1= id si 1 olan kitabý getir gibi
+				./books/baris= ismi Barýþ olan kitabý getir
+				./books/bs-101=bs-101 kodlu kitabý getir
+		QueryStrings
+			Kaynak olmayan özellikler için Query String kullanýlmalý.
+				/books?sort=title(title burada parametredir)
+				/books?page=1
+				/books?pageNumber=1&pageSize=10(&=and olarak kullanýlmýþ iki tane parametre için)
+		Örnek:
+			/books
+				GET(Read)=Kitaplarý listele
+				POST(Create)=Kitap oluþtur
+				PUT(Update)=Kitaplarý toplu olarak güncelle
+				DELETE(Delete)=Tüm kitaplarý bir anda sileceðinden HATA olacaktýr.(önerilmez)
+			/books/10
+				GET(Read)=Kitap getir
+				POST(Create)=bu iþlemi gerçekleþtirilmesi pek önerilmez HATA ya düþecektir.(önerilmez)
+				PUT(Update)=Kitap güncelle
+				DELETE(Delete)=Kitap sil
+	Idempotent=Sonucu deðiþtirmeden defalarca uygulanabilen iþlemi ifade eder.
+	Idempotency=Ýþlem sonuçlarý GET, PUT, PATCH ve DELETE eylemlerinde aynýdýr.
+			POST idempontent deðildir.
+	Sonuçlarýn Tasarýmý
+		Formata karar verin : Kullanýlacak formata karar verilmelidir. Genellikle JSON tercih edilir.
+		Format için Query String kullanýlmamalý. Headers bölümü tercih edilmelidir.
+		JSON=application/json
+		XML=text/xml
+	En Ýyi Pratikler
+		Sonuçlarýn kendini tanýmlamasý saðlanmalýdýr.
+		Programlý gezinmeye izin verilmelidir.
+		Sayfalama(Pagination), Sýralama(Sorting), Filtreleme(Filtering), Arama(Searching) desteði saðlanmalýdýr.
+		Önbellek(Caching) desteði sunulmalýdýr.
+		Sorgu sýnýrý getirilmesi önerilir.
+		Veri þekillendirilmesi saðlanmalýdýr.
+		Versiyonlama yapýlmalýdýr.
+		Belgelendirmeye özen gösterilmelidir.
+	Hypermedia=Hipermedya yardýmcý olabilir. Ancak pragmatizm, çoðu projenin buna ihtiyaç duymadýðý anlamýna gelmektedir.
+	Olgunlaþma Seviyesi
+			Level 0 = Bir tane URl ve bütün istekler{get,put,delete,post} tek bir URl için yapýlýyor ve tüm istekler için POST kullanýlýyor.
+			Level 1 = Birden fazla URl kaynak var ve her bir kaynak için birden fazla URl var. Ýstekler için genellikle POST kullanýlýyor.
+			Level 2 = Birden fazla URl kaynak var ancak HTTP metotlarý desteði de saðlanmaktadýr. (get,put,post,delete)
+			Level 3 = Hipermedia kullanýmý var yani birtakým kaynaðýn kendisini tanýmlayan linkler dinamik olarak üretiliyor. API keþfedilebilir oluyor ve örneðin hatalý bir URl geliyor yönlendirme iþlemi yapabiliyoruz.
+	Ýlk API Tasarýmý
+		API yayýnladýktan sonra deðiþtirilmemelidir.
+		Ýyi tasarlamýþ bir API olgunlaþabilir.
+-----------
+curl
+	Client URl. (Bir URle bir kaynaða baðlanýp baðlanamayacaðýmýzý veri transferi yapýp yapamayacaðýmýzý test etmek amacýyla kullanýlabilmektedir. Ücretsizdir.)
+		Unix bazlý sistemde mevcut olan bir komuttur.
+		Curl komutlarý URl'lerin baðlanabilirliðini kontrol etmek ve veri transferi için harika bir araç olarak kullanýlmak için üretilmiþtir.
+		Curl, istemci tarafýndaki ücretsiz bir URl transfer kütüphanesidir.
+		HTTP, HTTPS, FTP, FTPS, IMAP, IMAPS, SFTP, TELNET, GOPHER, LDAP, LDAPS, SMTP, SMTPS gibi protokolleri destekler.
+	Command Prompt git. curl --help yazýyoruz. Kullaným : curl [options...{isteðe baðlý}] <url>
+		Örnekler : curl https://api.github.com
+				   curl https://api.github.com/user--> cevap olumsuz ancak olumlu olmasý için yönlendiriyor.
+				   curl -i https://api.github.com/user --> status code olarak 401 geldi. gelen cevabýn uzunluðu(content-length) gelen cevabýn content-type: application/json
+				   curl -I https://api.github.com/user --> Sadece Headers gösterir Body göstermez.
+				   curl -I https://api.github.com/users --> Status code 200 geldi
+				   curl https://api.github.com/users/taylanutkuozen/repos
+	API
+		API
+		HTTP
+			Request
+				Http Verbs
+				Headers
+				Body
+			Response
+				StatusCode
+				Headers
+				Body
+			REST= Verinin temsili durumunu ifade eden transfer odaklý mimari
+			RESTful API Tasarýmý
+			curl
