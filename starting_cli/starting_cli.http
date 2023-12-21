@@ -1,0 +1,6 @@
+@starting_cli_HostAddress = http://localhost:5086
+
+GET {{starting_cli_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

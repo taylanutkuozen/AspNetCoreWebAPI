@@ -168,3 +168,11 @@ curl
 			REST= Verinin temsili durumunu ifade eden transfer odaklý mimari
 			RESTful API Tasarýmý
 			curl
+-----------------------
+Open File Folder diyerek projenin sayfasýna solution barýndýran sayfasýna gidiyoruz. cmd içerisinde ilgili path'e gidiyoruz.
+dotnet komutu yazýldý ilk olarak. oradan nasýl kullanýlacaðý hakkýnda bilgi öðrendik.
+dotnet new --list= Þablon adý olarak ve kullaným alanlarý yok listeler paylaþýldý.
+dotnet new webapi -o starting_cli = CLI olarak bir proje oluþturuldu.
+dotnet run = starting_cli ile proje baþlatýldý.
+----------------
+launchSettings.json=projenin farklý profiller ile farklý ortamlara göre çalýþtýrýlmasýný saðlar.
