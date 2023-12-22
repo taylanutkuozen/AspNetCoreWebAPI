@@ -176,3 +176,116 @@ dotnet new webapi -o starting_cli = CLI olarak bir proje oluþturuldu.
 dotnet run = starting_cli ile proje baþlatýldý.
 ----------------
 launchSettings.json=projenin farklý profiller ile farklý ortamlara göre çalýþtýrýlmasýný saðlar.
+--------
+HelloWebAPI projesinin launchsettings.json :
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:46331",
+      "sslPort": 44394
+    }
+  },
+  "profiles": {
+    "HelloWebAPI": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+        "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7199;http://localhost:5224",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+        "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production" --> Production yaptýk ve launchUrl vermedik. IIS Expresste Production modunda olduðu için baþlangýçta not found dedi sonrasýnda /swagger yazýlmasýna raðmen Swagger'i açmadý.
+		/home deyince ilgili response'u olarak döndürdü.
+		**Production mod olarak database connection, loglama ifadeleri, configuration tamamý deðiþtirebilir. Örneðin Development modda SQLite olarak çalýþ, Production modda MSSQL'e göre çalýþ.
+      }
+    }
+  }
+}
+***Örnek olarak launchSettings.json dosyasýnýn bir Copy sýný alýp tekrar properties kýsmýna yapýþtýrabiliriz. Kopyalanan ismi launchSettings.Production olarak deðiþtirerek bundan sonra Production mod ile ilgili durumlarý buradan set edebiliriz.
+------
+dotnet core UI | CLI
+Project Template Ýncelenmesi
+Project Template Uygulanmasý
+Ortam Deðiþkenleri
+--------------------------
+LOGGING
+Logging providers
+Build-in logging providers
+Dependency Injection
+Configure Logging
+Third-Party loggin providers
+----------
+appsettings.json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning" loglar warning seviyesi olduðunda gelmektedir.
+    }
+  },
+  "AllowedHosts": "*"
+}
+appsettings dosyasýný özelleþtirebiliyoruz ortam deðiþkenlerine baðlý olarak(Development,Production,Staging) gibi aþamalar için.
+Öðrenilenler=
+Logging providers
+Build-in logging providers
+Dependency Injection
+Configure Logging
+Third-party loggin providers
+-------
+Using Models
+Öncellikle ilgili path kullanarak cmd içerisinde dotnet new webapi -o vereceðimiz_isim(bookDemo) diyoruz.
+Sonra oluþturulan proje konsoluna gidiyoruz(cd bookDemo)
+Daha sonra bookDemo.csproj diyerek VisualStudio üzerinden devam ediyoruz.
+---------------
+PATCH Requests
+[FromBody]JsonPatchDocument<T> 
+Content Type= application/json, application/json-patch+json
+Microsoft.AspNetCore.JsonPatch
+Microsoft.AspNetCore.Mvc.NewtonsoftJson
+AddNewtonsoftJson();
+**Patch request'ler bir array içerisinde tanýmlanýr bu array'de çeþitli nesneler oluþturarak istediðimiz sayýda operasyonlarý koþturmuþ oluruz.
+Operasyonlar(op)
+-Add		0
+-Copy		4
+-Invalid	6
+-Move		3
+-Remove		1
+-Replace	2
+-Test		5
+Operasyon :			Add
+Ýstek Gövdesi :		{"op":"add","path":"/name","value":"new value"}
+Açýklama :			Belirtilen alana yeni bir deðer atar.
+Operasyon :			Remove
+Ýstek Gövdesi :		{"op":"remove","path":"/name"}
+Açýklama :			Belirtilen alana default deðer atar.
+Operasyon :			Replace
+Ýstek Gövdesi :		{"op":"replace","path":"/name","value":"new value"}
+Açýklama :			Belirtilen alanýn deðerini yeni bir deðer ile deðiþtirir.
+Operasyon :			Copy
+Ýstek Gövdesi :		{"op":"copy","from":"/name","path":"/title"}
+Açýklama :			"from" alanýnda belirtilen özellikten aldýðý deðeri "path" alanýnda belirtilen özelliðe taþýr.
+Operasyon :			Move
+Ýstek Gövdesi :		{"op":"move","from":"/name","path":"/title"}
+Açýklama :			"from" alanýnda belirtilen özellikten aldýðý deðeri "path" alanýnda belirtilen özelliðe taþýr.
+Operasyon :			Test
+Ýstek Gövdesi :		{"op":"test","path":"/name","value":"new value"}
+Açýklama :			"path" belirtilen alanýn "value" da belirtilen alana sahip olup olmadýðýný test eder.
+------------------
+Package Manager Console üzerinden Install-Package paket_adý komutu ile yükleyebiliriz.
+Yüklenen paketleri projenin üzerine çift týklayarak açýlan sayfada ItemGroup kýsmýndan veya dependencies içerisinde Packages bakarak görebiliriz.
+ {
+    "operationType": 0,//burayý silebiliriz.
+    "path": "string",
+    "op": "string",
+    "from": "string",
+    "value": "string"
+  }
