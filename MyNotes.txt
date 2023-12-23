@@ -289,3 +289,67 @@ Yüklenen paketleri projenin üzerine çift týklayarak açýlan sayfada ItemGroup kýs
     "from": "string",
     "value": "string"
   }
+----------------------------------------------------
+POSTMAN
+API Test
+HTTP Yöntemlerinin Test Edilmesi
+Global ve Koleksiyon Deðiþkenler
+API Test Scriptleri
+Random Fonksiyonlar
+----- 
+GET ALL BOOK
+pm.test("Status is 200", function() {
+    pm.response.to.have.status(200)
+})
+------
+GET ONE BOOK
+pm.test("Status is 200", ()=> {       //()=> error function
+    pm.response.to.have.status(200)
+});
+------
+GET ONE BOOK INVALID ID
+pm.test("Status code is 404", function () {
+    pm.response.to.have.status(404);
+});
+---------
+GET ONE BOOK FINAL CODE
+pm.test("Status is 200 or 404", ()=> {
+    pm.expect(pm.response.code).to.be.oneOf([200,400,404])
+});
+-------------
+DELETE ONE BOOK
+pm.test("Status code is 204", function () {
+    pm.response.to.have.status(204);
+});
+---------
+DELETE ALL BOOK
+pm.test("Status code is 204", function () {
+    pm.response.to.have.status(204);
+});
+-----------
+POST ONE BOOK
+pm.test("Status code is 201", function () {
+    pm.response.to.have.status(201);
+});
+-----------
+PUT ONE BOOK
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+---------
+PATCH ONE BOOK
+pm.test("Status code is 204", function () {
+    pm.response.to.have.status(204);
+});
+-------
+Postman Random Functions
+{
+    "id":{{$randomInt}},
+    "title":"{{$randomWords}}",
+    "price": "{{$randomPrice}}"
+}
+{
+    "id":{{bookId}},
+    "title":"{{$randomWords}}",
+    "price":{{$randomPrice}}
+}
